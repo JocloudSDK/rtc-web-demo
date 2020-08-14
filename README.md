@@ -21,3 +21,4 @@
 | choose video profile | 选择及切换 video mode | [在线体验](https://jocloudsdk.github.io/rtc-web-demo/videoProfile/index.html) | [代码](./videoProfile) |
 | volume control | 音量控制 | [在线体验](https://jocloudsdk.github.io/rtc-web-demo/volumeControl/index.html) | [代码](./volumeControl) |
 | audience | 观众 | [在线体验](https://jocloudsdk.github.io/rtc-web-demo/audience/index.html) | [代码](./audience) |
+| audio mode | 音频档位 | [在线体验](https://jocloudsdk.github.io/rtc-web-demo/audioMode/index.html) | [代码](./audioMode) |
