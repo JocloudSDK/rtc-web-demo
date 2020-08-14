@@ -45,31 +45,19 @@ $form.submit(async function (e) {
 });
 
 async function getDevices() {
-    let needAskDevicePermission = false;
     $audioDevice.empty();
     $videoDevice.empty();
     try {
-        let audioDevices = await WebRTC.getAudioDevices();
-        let videoDevices = await WebRTC.getVideoDevices();
+        // can't get device label without permission.
+        // set true to ask permission.
+        let audioDevices = await WebRTC.getAudioDevices(true);
+        let videoDevices = await WebRTC.getVideoDevices(true);
         audioDevices.forEach((device) => {
-            // Must request permission first, otherwise the device label cannot be got
-            if (device.label === '') {
-                needAskDevicePermission = true;
-            }
             $audioDevice.append(new Option(device.label, device.deviceId));
         });
         videoDevices.forEach((device) => {
-            if (device.label === '') {
-                needAskDevicePermission = true;
-            }
             $videoDevice.append(new Option(device.label, device.deviceId));
         });
-        if (needAskDevicePermission) {
-            let success = await askDevicePermission();
-            if (success) {
-                getDevices();
-            }
-        }
     } catch (e) {
         warn(e.error);
     }
@@ -196,19 +184,6 @@ $videoDevice.on('change', () => {
 
 function onDeviceChange() {
     getDevices();
-}
-
-async function askDevicePermission() {
-    try {
-        let stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-        stream.getTracks().forEach(t => {
-            t.stop();
-        });
-        return true;
-    } catch (e) {
-        warn(e);
-        return false;
-    }
 }
 
 function createUserDiv(name) {
