@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title>live transcoding</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/index.css">
+    <link rel="stylesheet" href="../static/bootstrap.min.css">
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+    <p class="navbar-brand">live transcoding</p>
+    <ul class="nav navbar-nav">
+        <li>
+            <a href="https://docs.jocloud.com/cloud/cn/product_category/rtc_service/rt_video_interaction/common_functions/push_to_cdn/Web.html">guide</a>
+        </li>
+        <li><a href="https://github.com/JocloudSDK/rtc-web-demo/tree/master/liveTranscoding">source code</a></li>
+        <li>
+            <a href="https://docs.jocloud.com/cloud/cn/product_category/rtc_service/rt_video_interaction/api/Web/current/category.html">API</a>
+        </li>
+        <li><a href="../index.html">other demos</a></li>
+    </ul>
+</nav>
+<div class="main">
+    <div id="message">
+    </div>
+    <form id="form" class="form-inline">
+        <div class="form-group">
+            <label for="appid">AppId</label>
+            <input type="text" class="form-control" id="appid" placeholder="appid" required>
+        </div>
+        <div class="form-group">
+            <label for="roomId">room</label>
+            <input type="text" class="form-control" id="roomId" placeholder="roomid" required>
+        </div>
+        <div class="form-group">
+            <label for="uid">uid</label>
+            <input type="text" class="form-control" id="uid" placeholder="uid" required>
+        </div>
+        <div class="form-group">
+            <label for="token">token</label>
+            <input type="text" class="form-control" id="token" placeholder="token(optional)">
+        </div>
+        <button type="submit" id="join" class="btn btn-primary">join</button>
+        <button type="button" id="leave" class="btn btn-default" disabled>leave</button>
+    </form>
+    <div>
+        <a id="invite" target="_blank">invite others</a>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div id="users"></div>
+        </div>
+        <div class="col-md-5" style="padding-top: 20px">
+            <form>
+                <div class="form-group">
+                    <label for="transcoding-mode">transcoding mode</label>
+                    <select class="form-control" id="transcoding-mode"></select>
+                </div>
+                <div class="form-group">
+                    <label for="transcoding-url">transcoding url</label>
+                    <input type="text" class="form-control" id="transcoding-url" placeholder="url">
+                </div>
+                <div class="form-group">
+                    <label for="transcoding-url">transcoding config</label>
+                    <textarea class="form-control" rows="20" id="transcoding-config"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" id="setLiveTranscoding" disabled>setLiveTranscoding
+                </button>
+            </form>
+            <div id="play-address" style="margin-top: 20px"></div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/jquery-3.4.1.min.js"></script>
+<script src="../static/bootstrap.min.js"></script>
+<script src="https://webrtc.jocloud.com/web-sdk/ThunderBolt-Web-Sdk-2.5.0.js"></script>
+<script src="index.js"></script>
+</body>
+
+</html>
