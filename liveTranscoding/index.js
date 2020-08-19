@@ -14,6 +14,8 @@ let $join = $("#join");
 let $users = $("#users");
 let $message = $("#message");
 let $form = $("form");
+let $audioDevice = $("#audio-device");
+let $videoDevice = $("#video-device");
 let $transcodingMode = $('#transcoding-mode');
 let $transcodingUrl = $('#transcoding-url');
 let $transcodingConfig = $('#transcoding-config');
@@ -21,6 +23,7 @@ let $setLiveTranscoding = $('#setLiveTranscoding');
 let $addStreamUrl = $('#addPublishTranscodingStreamUrl');
 let $playAddress = $('#play-address');
 let TaskId = undefined;
+let joinedUid = null;
 
 const url = new URL(window.location);
 let uAppid = url.searchParams.get('appid');
@@ -44,7 +47,7 @@ const TranscodingModes = [
 
 let userLists = [];
 
-function init() {
+async function init() {
     for (let item of TranscodingModes) {
         let mode = item[0];
         let width = item[1];
@@ -54,13 +57,14 @@ function init() {
     $transcodingMode.val(5);
     $transcodingUrl.val('rtmp://aliyun-live.upstream.yy.com/live/rtc_web_demo_' + getRandomId());
     updateTranscodingConfig();
+
+    await getDevices();
+    if (uAppid && uRoomId) {
+        join();
+    }
 }
 
 init();
-
-if (uAppid && uRoomId) {
-    join();
-}
 
 $form.submit(async function (e) {
     e.preventDefault();
@@ -119,7 +123,7 @@ async function join() {
         }
 
         // join room
-        await webrtc.joinRoom({
+        joinedUid = await webrtc.joinRoom({
             uid: uid,
             roomId: roomId,
             token: token,
@@ -128,9 +132,11 @@ async function join() {
         $leave.attr('disabled', false);
         // create local stream
         let localStream = await webrtc.createStream({
-            audio: true, // enable microphone
+            audio: {
+                deviceId: $audioDevice.val(), // specific audio device
+            },
             video: {
-                videoMode: 3, // HD VIDEO
+                deviceId: $videoDevice.val(), // specific video device
             }
         });
         let divId = createUserDiv('local-user-' + localStream.uid);
@@ -165,6 +171,7 @@ function leave() {
     $invite.hide();
     joined = false;
     userLists = [];
+    joinedUid = null;
     updateTranscodingConfig();
     $playAddress.empty();
 }
@@ -271,6 +278,37 @@ function updateTranscodingConfig() {
     }
     $transcodingConfig.val(JSON.stringify(config, null, 2));
 }
+
+async function getDevices() {
+    $audioDevice.empty();
+    $videoDevice.empty();
+    try {
+        // can't get device label without permission.
+        // set true to ask permission.
+        let audioDevices = await WebRTC.getAudioDevices(true);
+        let videoDevices = await WebRTC.getVideoDevices(true);
+        audioDevices.forEach((device) => {
+            $audioDevice.append(new Option(device.label, device.deviceId));
+        });
+        videoDevices.forEach((device) => {
+            $videoDevice.append(new Option(device.label, device.deviceId));
+        });
+    } catch (e) {
+        warn(e.error);
+    }
+}
+
+$audioDevice.on('change', () => {
+    if (webrtc && joinedUid && webrtc.hasAudio(joinedUid)) {
+        webrtc.changeDevice('audio', $audioDevice.val());
+    }
+});
+
+$videoDevice.on('change', () => {
+    if (webrtc && joinedUid && webrtc.hasVideo(joinedUid)) {
+        webrtc.changeDevice('video', $videoDevice.val());
+    }
+});
 
 function warn(s) {
     $message.append(`<div class="alert alert-danger alert-dismissible" role="alert">

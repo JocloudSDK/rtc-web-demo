@@ -57,6 +57,18 @@
             <div id="users"></div>
         </div>
         <div class="col-md-5" style="padding-top: 20px">
+            <form class="form">
+                <div class="form-group">
+                    <label for="audio-device">audio device</label>
+                    <select class="form-control" id="audio-device"></select>
+                </div>
+            </form>
+            <form class="form">
+                <div class="form-group">
+                    <label for="video-device">video device</label>
+                    <select class="form-control" id="video-device"></select>
+                </div>
+            </form>
             <form>
                 <div class="form-group">
                     <label for="transcoding-mode">transcoding mode</label>
@@ -64,7 +76,7 @@
                 </div>
                 <div class="form-group">
                     <label for="transcoding-config">transcoding config</label>
-                    <textarea class="form-control" rows="15" id="transcoding-config"></textarea>
+                    <textarea class="form-control" rows="10" id="transcoding-config"></textarea>
                 </div>
                 <button type="button" class="btn btn-default" id="setLiveTranscoding" disabled>setLiveTranscoding
                 </button>
@@ -73,7 +85,7 @@
                 <label for="transcoding-url">transcoding url</label>
                 <input type="text" class="form-control" id="transcoding-url" placeholder="url">
             </div>
-            <button type="button" class="btn btn-default" id="addPublishTranscodingStreamUrl" disabled>addPublishTranscodingStreamUrl
+            <button type="button" class="btn btn-primary" id="addPublishTranscodingStreamUrl" disabled>addPublishTranscodingStreamUrl
             </button>
             <div id="play-address" style="margin-top: 20px"></div>
         </div>
