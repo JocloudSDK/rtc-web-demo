@@ -18,7 +18,9 @@ let $transcodingMode = $('#transcoding-mode');
 let $transcodingUrl = $('#transcoding-url');
 let $transcodingConfig = $('#transcoding-config');
 let $setLiveTranscoding = $('#setLiveTranscoding');
+let $addStreamUrl = $('#addPublishTranscodingStreamUrl');
 let $playAddress = $('#play-address');
+let TaskId = undefined;
 
 const url = new URL(window.location);
 let uAppid = url.searchParams.get('appid');
@@ -135,6 +137,7 @@ async function join() {
         await webrtc.play(localStream.uid, divId); // play local stream
         await webrtc.publish(); // publish local stream
         addUserInfo(uid, roomId);
+        TaskId = 'task_' + getRandomId();
         $setLiveTranscoding.prop('disabled', false);
         $invite.attr('href', `index.html?appid=${appId}&roomId=${roomId}`);
         $invite.show();
@@ -174,20 +177,31 @@ $leave.click(() => {
 $setLiveTranscoding.click(() => {
     try {
         let config = JSON.parse($transcodingConfig.val());
+        let err = webrtc.setLiveTranscodingTask(TaskId, config);
+        if (err) {
+            throw err;
+        }
+        $addStreamUrl.prop('disabled', false);
+    } catch (e) {
+        if (e.error) {
+            warn(e.error);
+        } else {
+            warn(e);
+        }
+    }
+});
+
+$addStreamUrl.click(() => {
+    try {
         let url = $transcodingUrl.val();
-        let taskId = 'task_' + getRandomId();
-        let err = webrtc.setLiveTranscodingTask(taskId, config);
+        let err = webrtc.addPublishTranscodingStreamUrl(TaskId, url);
         if (err) {
             throw err;
         }
-        err = webrtc.addPublishTranscodingStreamUrl(taskId, url);
-        if (err) {
-            throw err;
-        }
-        $setLiveTranscoding.prop('disabled', true);
         $playAddress.append(`<div>play address</div>`);
         $playAddress.append(`<div><span class="label label-info">${url.replace('upstream', 'downstream')}</span></div>`);
         $playAddress.append(`<div>You can use ffplay, VLC or this <a href='http://ossrs.net/players/srs_player.html' target="_blank">link</a> to play rtmp stream`);
+        $addStreamUrl.prop('disabled', true);
     } catch (e) {
         if (e.error) {
             warn(e.error);

@@ -63,16 +63,18 @@
                     <select class="form-control" id="transcoding-mode"></select>
                 </div>
                 <div class="form-group">
-                    <label for="transcoding-url">transcoding url</label>
-                    <input type="text" class="form-control" id="transcoding-url" placeholder="url">
+                    <label for="transcoding-config">transcoding config</label>
+                    <textarea class="form-control" rows="15" id="transcoding-config"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="transcoding-url">transcoding config</label>
-                    <textarea class="form-control" rows="20" id="transcoding-config"></textarea>
-                </div>
-                <button type="button" class="btn btn-primary" id="setLiveTranscoding" disabled>setLiveTranscoding
+                <button type="button" class="btn btn-default" id="setLiveTranscoding" disabled>setLiveTranscoding
                 </button>
             </form>
+            <div class="form-group" style="padding-top: 20px">
+                <label for="transcoding-url">transcoding url</label>
+                <input type="text" class="form-control" id="transcoding-url" placeholder="url">
+            </div>
+            <button type="button" class="btn btn-default" id="addPublishTranscodingStreamUrl" disabled>addPublishTranscodingStreamUrl
+            </button>
             <div id="play-address" style="margin-top: 20px"></div>
         </div>
     </div>
