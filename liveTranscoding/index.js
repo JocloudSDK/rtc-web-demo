@@ -145,7 +145,7 @@ async function join() {
         addUserInfo(uid, roomId);
         TaskId = 'task_' + getRandomId();
         $setLiveTranscoding.prop('disabled', false);
-        $invite.attr('href', `index.html?appid=${appId}&roomId=${roomId}`);
+        $invite.attr('href', `/rtc-web-demo/basicVideoCall/index.html?appid=${appId}&roomId=${roomId}`);
         $invite.show();
     } catch (e) {
         if (e && e.error) {
