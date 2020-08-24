@@ -102,7 +102,7 @@ async function join() {
             let divId = createUserDiv('remote-user-' + remoteStream.uid);
 
             // play remote stream
-            await webrtc.play(remoteStream.uid, divId);
+            await webrtc.play(remoteStream.uid, divId, {controls: true});
         });
 
         webrtc.on('remote_stream_remove', async (ev, remoteStream) => {
@@ -136,7 +136,7 @@ async function join() {
             }
         });
         let divId = createUserDiv('local-user-' + localStream.uid);
-        await webrtc.play(localStream.uid, divId); // play local stream
+        await webrtc.play(localStream.uid, divId, {controls: true}); // play local stream
         await webrtc.publish(); // publish local stream
         $invite.attr('href', `index.html?appid=${appId}&roomId=${roomId}`);
         $invite.show();

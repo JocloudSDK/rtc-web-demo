@@ -104,7 +104,7 @@ async function join() {
             let divId = createUserDiv('remote-user-' + remoteStream.uid);
 
             // play remote stream
-            await webrtc.play(remoteStream.uid, divId);
+            await webrtc.play(remoteStream.uid, divId, {controls: true});
 
             addUserInfo(remoteStream.uid, remoteStream.roomId);
         });
@@ -140,12 +140,12 @@ async function join() {
             }
         });
         let divId = createUserDiv('local-user-' + localStream.uid);
-        await webrtc.play(localStream.uid, divId); // play local stream
+        await webrtc.play(localStream.uid, divId, {controls: true}); // play local stream
         await webrtc.publish(); // publish local stream
         addUserInfo(uid, roomId);
         TaskId = 'task_' + getRandomId();
         $setLiveTranscoding.prop('disabled', false);
-        $invite.attr('href', `/rtc-web-demo/basicVideoCall/index.html?appid=${appId}&roomId=${roomId}`);
+        $invite.attr('href', `/rtc-web-demo/switchDevice/index.html?appid=${appId}&roomId=${roomId}`);
         $invite.show();
     } catch (e) {
         if (e && e.error) {
