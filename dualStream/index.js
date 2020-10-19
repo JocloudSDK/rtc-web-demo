@@ -101,12 +101,10 @@ async function join() {
         joined = true;
         $leave.attr('disabled', false);
         // create local stream
-        let localStream = await webrtc.createDualStream({
+        webrtc.enableDualStream(); // enable dual stream mode
+        let localStream = await webrtc.createStream({
             audio: true, // enable microphone
-            video: {
-                highVideoMode: 4,
-                lowVideoMode: 1,
-            }
+            video: true,
         });
         let divId = createUserDiv('local-user-' + localStream.uid);
         await webrtc.play(localStream.uid, divId); // play local stream
