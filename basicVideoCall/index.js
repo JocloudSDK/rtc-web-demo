@@ -6,6 +6,7 @@ let joined = false;
 let $invite = $("#invite");
 
 let $appid = $("#appid");
+let $area = $("#area");
 let $roomId = $("#roomId");
 let $uid = $("#uid");
 let $token = $("#token");
@@ -17,13 +18,17 @@ let $form = $("form");
 
 const url = new URL(window.location);
 let uAppid = url.searchParams.get('appid');
+let uArea = url.searchParams.get('area');
 let uRoomId = url.searchParams.get('roomId');
 let uToken = url.searchParams.get('token');
 $appid.val(uAppid);
+$area.val(uArea);
 $roomId.val(uRoomId);
 $token.val(uToken);
+
 $invite.hide();
 $uid.val(getRandomUid());
+$area.val(0);
 
 if (uAppid && uRoomId) {
     join();
@@ -40,6 +45,8 @@ async function join() {
             return;
         }
         let appId = parseInt($appid.val());
+        let area = parseInt($area.val());
+        console.log(area)
         if (isNaN(appId)) {
             warn('AppId must be number');
             return;
@@ -48,6 +55,7 @@ async function join() {
 
 
         let err = webrtc.init(appId); // init
+        webrtc.setArea(area);
         if (err === null) {
             console.log('init success');
         } else {
